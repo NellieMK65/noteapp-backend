@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_cors import CORS
 
 from models import db
+from resources.users import SigninResource
 
 app = Flask(__name__)
 
@@ -21,3 +22,6 @@ app.config["SQLALCHEMY_ECHO"] = True
 migrate = Migrate(app, db)
 
 db.init_app(app)
+
+
+api.add_resource(SigninResource, "/signin")
