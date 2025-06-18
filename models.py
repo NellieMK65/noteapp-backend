@@ -76,3 +76,5 @@ class User(db.Model, SerializerMixin):
     # define relationships
     categories = db.relationship("Category", back_populates="user")
     entries = db.relationship("Entry", back_populates="user")
+
+    serialize_rules = ("-password", "-categories", "-entries")

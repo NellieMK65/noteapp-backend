@@ -5,6 +5,38 @@ from flask_jwt_extended import create_access_token
 from models import db, User
 
 
+class LoginResource(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument(
+        "email", required=True, type=str, help="Email address is required"
+    )
+    parser.add_argument(
+        "password", required=True, type=str, help="Password is required"
+    )
+
+    def post(self):
+        data = self.parser.parse_args()
+
+        # 1 Check if user with exists
+        user = User.query.filter_by(email=data["email"]).first()
+
+        if user is None:
+            return {"message": "Invalid email or password"}, 403
+
+        # 2 validate password is ok
+        if check_password_hash(user.password, data["password"]):
+            # 3. generate token
+            access_token = create_access_token(identity=user.id)
+
+            return {
+                "message": "Login successful",
+                "user": user.to_dict(),
+                "access_token": access_token,
+            }, 201
+        else:
+            return {"message": "Invalid email or password"}, 403
+
+
 class SigninResource(Resource):
     # define the shape/body of signin
     parser = reqparse.RequestParser()

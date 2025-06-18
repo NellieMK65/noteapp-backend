@@ -10,7 +10,7 @@ from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
 
 from models import db
-from resources.users import SigninResource
+from resources.users import SigninResource, LoginResource
 
 # load environment variables
 load_dotenv()
@@ -50,6 +50,7 @@ class Index(Resource):
 
 api.add_resource(Index, "/")
 api.add_resource(SigninResource, "/signin")
+api.add_resource(LoginResource, "/login")
 
 if __name__ == "__main__":
     app.run(port=5555)
