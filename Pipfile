@@ -14,7 +14,7 @@ python-dotenv = "*"
 flask-bcrypt = "*"
 flask-jwt-extended = "*"
 psycopg2 = "*"
-uvicorn = "*"
+gunicorn = "*"
 
 [dev-packages]
 
