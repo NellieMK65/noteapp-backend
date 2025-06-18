@@ -32,6 +32,8 @@ app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET")
 
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=24)
 
+app.config["BUNDLE_ERRORS"] = True
+
 jwt = JWTManager(app)
 
 bcrypt = Bcrypt(app)
