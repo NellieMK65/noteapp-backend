@@ -13,6 +13,8 @@ flask-cors = "*"
 python-dotenv = "*"
 flask-bcrypt = "*"
 flask-jwt-extended = "*"
+psycopg2 = "*"
+uvicorn = "*"
 
 [dev-packages]
 
