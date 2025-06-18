@@ -10,6 +10,9 @@ sqlalchemy-serializer = "*"
 flask-migrate = "*"
 flask-sqlalchemy = "*"
 flask-cors = "*"
+python-dotenv = "*"
+flask-bcrypt = "*"
+flask-jwt-extended = "*"
 
 [dev-packages]
 

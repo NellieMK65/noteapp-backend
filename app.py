@@ -1,10 +1,19 @@
+import os
+from datetime import timedelta
+
 from flask import Flask
 from flask_restful import Api
 from flask_migrate import Migrate
 from flask_cors import CORS
+from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
+from dotenv import load_dotenv
 
 from models import db
 from resources.users import SigninResource
+
+# load environment variables
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -15,9 +24,17 @@ CORS(app)
 api = Api(app)
 
 # configure our app
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///note.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 
 app.config["SQLALCHEMY_ECHO"] = True
+
+app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET")
+
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=24)
+
+jwt = JWTManager(app)
+
+bcrypt = Bcrypt(app)
 
 migrate = Migrate(app, db)
 
