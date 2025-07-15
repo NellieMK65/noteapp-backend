@@ -70,6 +70,9 @@ class User(db.Model, SerializerMixin):
     full_name = db.Column(db.Text, nullable=False)
     email = db.Column(db.VARCHAR, nullable=False, unique=True)
     password = db.Column(db.VARCHAR, nullable=True)
+    role = db.Column(
+        db.Enum("admin", "user"), nullable=False, server_default="user"
+    )  # admin and user
     created_at = db.Column(db.TIMESTAMP, default=datetime.now())
     updated_at = db.Column(db.TIMESTAMP, onupdate=datetime.now())
 
