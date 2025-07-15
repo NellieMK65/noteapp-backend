@@ -9,8 +9,8 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
 
-from models import db
-from resources.users import SigninResource, LoginResource
+from models import db, User
+from resources.users import SigninResource, LoginResource, UsersResource
 
 # load environment variables
 load_dotenv()
@@ -43,6 +43,21 @@ migrate = Migrate(app, db)
 db.init_app(app)
 
 
+# Register a callback function that loads a user from your database whenever
+# a protected route is accessed. This should return any python object on a
+# successful lookup, or None if the lookup failed for any reason (for example
+# if the user has been deleted from the database).
+# @jwt.user_lookup_loader
+# def user_lookup_callback(_jwt_header, jwt_data):
+#     identity = jwt_data["sub"]
+#     user = User.query.filter_by(id=identity).one_or_none()
+
+#     if user is None:
+#         return {}
+#     else:
+#         return user.to_dict()
+
+
 class Index(Resource):
     def get(self):
         return {"message": "Welcome to the notted api"}
@@ -51,6 +66,7 @@ class Index(Resource):
 api.add_resource(Index, "/")
 api.add_resource(SigninResource, "/signin")
 api.add_resource(LoginResource, "/login")
+api.add_resource(UsersResource, "/users")
 
 if __name__ == "__main__":
     app.run(port=5555)

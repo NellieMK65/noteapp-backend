@@ -1,8 +1,11 @@
 from flask_restful import Resource, reqparse
 from flask_bcrypt import generate_password_hash, check_password_hash
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import current_user
+
 
 from models import db, User
+from utils import admin_required
 
 
 class LoginResource(Resource):
@@ -26,7 +29,9 @@ class LoginResource(Resource):
         # 2 validate password is ok
         if check_password_hash(user.password, data["password"]):
             # 3. generate token
-            access_token = create_access_token(identity=user.id)
+            access_token = create_access_token(
+                identity=user.id, additional_claims={"role": user.role}
+            )
 
             return {
                 "message": "Login successful",
@@ -73,7 +78,9 @@ class SigninResource(Resource):
         db.session.commit()
 
         # 4. generate access token (JWT)
-        access_token = create_access_token(identity=user.id)
+        access_token = create_access_token(
+            identity=user.id, additional_claims={"role": user.role}
+        )
 
         # 5. send welcome email
 
@@ -82,3 +89,19 @@ class SigninResource(Resource):
             "access_token": access_token,
             "user": user.to_dict(),
         }, 201
+
+
+class UsersResource(Resource):
+    @admin_required()
+    def get(self):
+        # if current_user["role"] != "admin":
+        #     return {"message": "Unauthorized request"}, 403
+
+        data = User.query.all()
+
+        result = []
+
+        for user in data:
+            result.append(user.to_dict())
+
+        return result
