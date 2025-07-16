@@ -15,6 +15,7 @@ flask-bcrypt = "*"
 flask-jwt-extended = "*"
 psycopg2 = "*"
 gunicorn = "*"
+requests = "*"
 
 [dev-packages]
 
