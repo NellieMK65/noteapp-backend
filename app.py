@@ -11,7 +11,11 @@ from dotenv import load_dotenv
 
 from models import db, User
 from resources.users import SigninResource, LoginResource, UsersResource
-from resources.payment import PaymentResource
+from resources.payment import (
+    PaymentResource,
+    PaymentCallbackResource,
+    CheckPaymentResource,
+)
 
 # load environment variables
 load_dotenv()
@@ -69,6 +73,8 @@ api.add_resource(SigninResource, "/signin")
 api.add_resource(LoginResource, "/login")
 api.add_resource(UsersResource, "/users")
 api.add_resource(PaymentResource, "/payments")
+api.add_resource(PaymentCallbackResource, "/payments/callback")
+api.add_resource(CheckPaymentResource, "/payments/check/<string:checkout_request_id>")
 
 if __name__ == "__main__":
     app.run(port=5555)
