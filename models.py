@@ -81,3 +81,11 @@ class User(db.Model, SerializerMixin):
     entries = db.relationship("Entry", back_populates="user")
 
     serialize_rules = ("-password", "-categories", "-entries")
+
+
+class Payment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    checkout_id = db.Column(db.VARCHAR)
+    mpesa_code = db.Column(db.VARCHAR)
+    paying_phone = db.Column(db.VARCHAR)
+    created_at = db.Column(db.TIMESTAMP, default=datetime.now())
